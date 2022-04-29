@@ -1,82 +1,78 @@
 package com.yandc.nightcityportalside.models;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
  * The Class Role.
  */
-@Entity @Table(name = "roles")
-public class Role {
+@Entity
+@Table(name = "roles")
+public class Role implements Serializable {
 	
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = 1L;
+
 	/** The id. */
 	@Id
 	@GeneratedValue
 	(strategy= GenerationType.IDENTITY)
+	private Long idRole;
 	
-	private Integer id;
+	@Column(unique = true, length=20)
+	private String rolName;
 	
-	/** The name. */
-	@Enumerated
-	(EnumType.STRING)
-	@Column
-	(length= 20, name="NAME")
-	private IRole name;
-	
-		/**
-		 * Instantiates a new role.
-		 */
-		public Role() {
-		}
-		
-		/**
-		 * Instantiates a new role.
-		 *
-		 * @param name the name
-		 */
-		public Role (IRole name) {
-		this.name = name;
-		}
-		
-		/**
-		 * Gets the id.
-		 *
-		 * @return the id
-		 */
-		public Integer getId() {
-		return id;
-		}
-		
-		/**
-		 * Sets the id.
-		 *
-		 * @param id the new id
-		 */
-		public void setId (Integer id) {
-			this.id = id;
-		}
-		
-		/**
-		 * Gets the name.
-		 *
-		 * @return the name
-		 */
-		public IRole getName() {
-		return name;
-		}
-		
-		/**
-		 * Sets the name.
-		 *
-		 * @param name the new name
-		 */
-		public void setName(IRole name) {
-		this.name= name;
-		}
+	@ManyToMany(mappedBy="roles")
+	private List<Users> user;
+
+	/**
+	 * @return the user
+	 */
+	public List<Users> getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(List<Users> user) {
+		this.user = user;
+	}
+
+	/**
+	 * @return the idRole
+	 */
+	public Long getIdRole() {
+		return idRole;
+	}
+
+	/**
+	 * @param idRole the idRole to set
+	 */
+	public void setIdRole(Long idRole) {
+		this.idRole = idRole;
+	}
+
+	/**
+	 * @return the rolName
+	 */
+	public String getRolName() {
+		return rolName;
+	}
+
+	/**
+	 * @param rolName the rolName to set
+	 */
+	public void setRolName(String rolName) {
+		this.rolName = rolName;
+	}
 }
+	

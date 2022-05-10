@@ -46,7 +46,7 @@ public class UserRestController {
 
 	
 	@Secured({"ROLE_ADMIN", "ROLE_USER"})
-	@GetMapping("/user/{idUser}")
+	@GetMapping("/users/{idUser}")
 	public ResponseEntity<?> show(@PathVariable Long idUser) {
 		
 		Users user = null;
@@ -149,7 +149,7 @@ public class UserRestController {
 	}
 	
 	@Secured("ROLE_ADMIN")
-	@DeleteMapping("/user/{idUser}")
+	@DeleteMapping("/users/{idUser}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap<>();

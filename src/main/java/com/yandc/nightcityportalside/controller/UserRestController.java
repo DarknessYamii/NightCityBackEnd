@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yandc.nightcityportalside.models.Users;
 import com.yandc.nightcityportalside.repository.UserRepository;
+import com.yandc.nightcityportalside.service.UserService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
@@ -32,12 +33,16 @@ import com.yandc.nightcityportalside.repository.UserRepository;
 public class UserRestController {
 
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 
 	
 	// private final Logger log = LoggerFactory.getLogger(ClienteRestController.class);
 
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/users")
 	public List<Users> index() {
 		return userRepository.findAll();
@@ -68,6 +73,12 @@ public class UserRestController {
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 	}
 	
+	
+	@PostMapping("/users/register")
+    public ResponseEntity<?> register(@Valid @RequestBody Users user)  {	
+        userService.saveUserWithDefaultRole(user);
+        return new ResponseEntity<Map<String, Object>>(HttpStatus.CREATED);
+    }
 	@Secured("ROLE_ADMIN")
 	@PostMapping("/users")
 	public ResponseEntity<?> create(@Valid @RequestBody Users user, BindingResult result) {
@@ -128,7 +139,6 @@ public class UserRestController {
 
 		try {
 
-			userActual.setUrl(user.getUrl());
 			userActual.setEmail(user.getEmail());
 			userActual.setPassword(user.getPassword());
 			userActual.setUsername(user.getUsername());

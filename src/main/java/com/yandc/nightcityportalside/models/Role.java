@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * The Class Role.
  */
 @Entity
-@Table(name = "roles")
+@Table(name = "ROLES")
 public class Role implements Serializable {
 	
 	/** The Constant serialVersionUID. */
@@ -29,23 +29,6 @@ public class Role implements Serializable {
 	
 	@Column(unique = true, length=20)
 	private String rolName;
-	
-	@ManyToMany(mappedBy="roles")
-	private List<Users> user;
-
-	/**
-	 * @return the user
-	 */
-	public List<Users> getUser() {
-		return user;
-	}
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(List<Users> user) {
-		this.user = user;
-	}
 
 	/**
 	 * @return the idRole

@@ -1,8 +1,7 @@
 package com.yandc.nightcityportalside.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,16 +20,18 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
+import net.bytebuddy.implementation.bind.annotation.Default;
+
 
 /**
  * The Class User.
  */
 @Entity
-@Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = "USERNAME"),
-		@UniqueConstraint(columnNames = "EMAIL") })
-public class Users implements Serializable{
+@Table(name = "USERS")
+public class Users implements Serializable {
 
-	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -41,15 +42,16 @@ public class Users implements Serializable{
 
 	/** The username. */
 	@NotBlank
-	@Column(unique = true , name = "USERNAME", nullable = false)
+	@Column(unique = true, name = "USERNAME", nullable = false)
 	@Size(max = 20)
 	private String username;
 
-	/** The url. */
-	@Column(name = "URL", nullable = false)
+	/** The username. */
 	@NotBlank
-	private String url;
-	
+	@Column(name = "APELLIDO", nullable = true)
+	@Size(max = 20)
+	private String apellido;
+
 	/** The email. */
 	@NotBlank
 	@Size(max = 50)
@@ -62,13 +64,16 @@ public class Users implements Serializable{
 	@Column(name = "PASSWORD", nullable = false)
 	@Size(max = 120)
 	private String password;
+
+	
 	
 	private boolean enabled;
 
 	/** The roles. */
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name="USER_ROLE", joinColumns = @JoinColumn(name="USER_ID"), inverseJoinColumns =  @JoinColumn(name="ROLE_ID"))
-	private List<Role> roles = new ArrayList<>();
+	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"), uniqueConstraints = {
+			@UniqueConstraint(columnNames = { "USER_ID", "ROLE_ID" }) })
+	private Set<Role> roles = new HashSet<>();
 
 	/**
 	 * @return the idUser
@@ -96,20 +101,6 @@ public class Users implements Serializable{
 	 */
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * @param url the url to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	/**
@@ -154,20 +145,36 @@ public class Users implements Serializable{
 		this.enabled = enabled;
 	}
 
+
 	/**
 	 * @return the roles
 	 */
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
 	/**
 	 * @param roles the roles to set
 	 */
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
+	public void addRoles(Role role) {
+		this.roles.add(role);
+	}
+	/**
+	 * @return the apellido
+	 */
+	public String getApellido() {
+		return apellido;
+	}
 
-	
+	/**
+	 * @param apellido the apellido to set
+	 */
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
 }

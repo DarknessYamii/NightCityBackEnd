@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService{
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Users user = userRepository.findByUsername(username);
-		saveUserWithDefaultRole(user);
+		
 		if(user == null ) {
 			logger.error("ERROR en el Login: no existe el usuario '"+username+"' en el sistema!");
 			throw new UsernameNotFoundException("ERROR en el Login: no existe el usuario '"+username+"' en el sistema!");

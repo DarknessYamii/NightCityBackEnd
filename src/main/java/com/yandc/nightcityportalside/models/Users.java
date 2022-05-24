@@ -65,8 +65,6 @@ public class Users implements Serializable {
 	@Size(max = 120)
 	private String password;
 
-	
-	
 	private boolean enabled;
 
 	/** The roles. */
